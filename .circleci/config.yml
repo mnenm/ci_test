@@ -12,12 +12,12 @@ jobs:
       - restore_cache:
           keys:
             - build-cache-{{ .Branch }}-{{ .Revision }}
-      - run: go mod download
+      - run: make modules
       - save_cache:
           key: go-mod-{{ .Branch }}-{{ checksum "go.mod" }}
           paths:
             - ~/pkg/mod/cache
-      - run: go test -v ./...
+      - run: make test
       - save_cache:
           key: go-mod-{{ .Branch }}-{{ checksum "go.mod" }}
           paths:
@@ -32,7 +32,7 @@ jobs:
       - image: circleci/golang:1.14
     steps:
       - checkout
-      - run: GOOS=linux GOARCH=amd64 go build -o app
+      - run: make build_linux
 
 
 workflows:
