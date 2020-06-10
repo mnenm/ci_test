@@ -1,7 +1,7 @@
 version: 2
 jobs:
   test:
-    working_directory: /go/src/github.com/{{ORG_NAME}}/{{REPO_NAME}}
+    working_directory: ~/app
     docker:
       - image: circleci/golang:1.14
     steps:
@@ -9,12 +9,19 @@ jobs:
       - restore_cache:
           keys:
             - go-mod-{{ .Branch }}-{{ checksum "go.mod" }}
+      - restore_cache:
+          keys:
+            - build-cache-{{ .Branch }}-{{ .Revision }}
       - run: go mod download
+      - run: go test -v ./...
       - save_cache:
           key: go-mod-{{ .Branch }}-{{ checksum "go.mod" }}
           paths:
-            - ~/pkg/mod/cache
-      - run: go test -v ./...
+            - /pkg/mod/cache
+      - save_cache:
+          key: build-cache-{{ .Branch }}-{{ .Revision }}
+          paths:
+            - /.cache/go-build
 
 workflows:
   version: 2
