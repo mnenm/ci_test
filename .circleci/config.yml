@@ -27,8 +27,19 @@ jobs:
           paths:
             - /.cache/go-build
 
+  build:
+    working_directory: ~/app
+    docker:
+      - image: circleci/golang:1.14
+    steps:
+      - checkout
+      - run: GOOS=linux GOARCH=amd64 go build -o citest
+
 workflows:
   version: 2
   test:
     jobs:
       - test
+      - build:
+          relquires:
+            - test
