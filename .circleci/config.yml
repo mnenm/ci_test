@@ -32,7 +32,7 @@ jobs:
       - image: circleci/golang:1.14
     steps:
       - checkout
-      - run: make build_linux
+      - run: make build_linux BUILD_NAME=citest
 
 
 workflows:
@@ -43,3 +43,6 @@ workflows:
       - build:
           requires:
             - test
+          filters:
+            branches:
+              only: master
