@@ -32,6 +32,7 @@ jobs:
       - run: make build_linux BUILD_NAME=bot
       - run: ssh -o StrictHostKeyChecking=no ${USER_NAME}@${HOST_NAME} './stop-bot.sh'
       - run: scp ~/app/bot ${USER_NAME}@${HOST_NAME}:~/deploybot
+      - run: scp ~/conf/* ${USER_NAME}@${HOST_NAME}:~/conf/
       - run: ssh ${USER_NAME}@${HOST_NAME} './start-bot.sh'
 
 workflows:
